@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain.Models;
 using Domain.Repositories;
+using Microsoft.Extensions.Logging;
 
 namespace Domain.Services
 {
@@ -12,18 +13,9 @@ namespace Domain.Services
 		Task<IEnumerable<BccrSingleVentanillaModel>> GetBccrSingleVentanillaModelsAsync(string indicador, DateTime dateTime);
 	}
 
-	public class BccrCurrencyService : IBccrCurrencyService
+	public class BccrCurrencyService(IBccrCurrencyRepository bccrCurrencyRepository, IBccrExchangeCache bccrExchangeCache, ILogger<BccrCurrencyService> logger) : IBccrCurrencyService
 	{
-		private readonly IBccrCurrencyRepository _bccrCurrencyRepository;
-		private readonly IBccrExchangeCache _bccrExchangeCache;
-		private readonly bool _allowCache;
-
-		public BccrCurrencyService(IBccrCurrencyRepository bccrCurrencyRepository, IBccrExchangeCache bccrExchangeCache)
-		{
-			_bccrCurrencyRepository = bccrCurrencyRepository;
-			_bccrExchangeCache = bccrExchangeCache;
-			_allowCache = true;
-		}
+		private readonly bool _allowCache = true;
 
 		public async Task<IEnumerable<BccrSingleVentanillaModel>> GetBccrSingleVentanillaModelsAsync(string indicador, DateTime dateTime)
 		{
@@ -32,32 +24,35 @@ namespace Domain.Services
 			var endDate = dateTime.Date.AddDays(1);
 			if (!_allowCache)
 			{
+				logger.LogInformation("Bccr Cache is disabled");
 				var res = await GetFromDbBccrSingleVentanillaModelsAsync(indicador, dateTime, initialDate, endDate);
 				return res.BccrSingleVentanillaModels;
 			}
 
-			var cache = _bccrExchangeCache.Get(indicador, dateTime);
+			var cache = bccrExchangeCache.Get(indicador, dateTime);
 			if (cache != null)
 			{
-				return new[] { cache };
+				logger.LogInformation("Bccr Cache hit");
+				return [cache];
 			}
 
+			logger.LogInformation("Bccr Cache miss");
 			var results = await GetFromDbBccrSingleVentanillaModelsAsync(indicador, dateTime, initialDate, endDate);
 			if (results?.BccrSingleVentanillaModels == null || !results.BccrSingleVentanillaModels.Any())
 			{
-				return Array.Empty<BccrSingleVentanillaModel>();
+				return [];
 			}
 
-			_bccrExchangeCache.Set(indicador, results);
+			bccrExchangeCache.Set(indicador, results);
 			return results.BccrSingleVentanillaModels;
 		}
 
 		private async Task<BccrSingleVentanillaModelResponse> GetFromDbBccrSingleVentanillaModelsAsync(string indicador, DateTime reqDate, DateTime initialDate, DateTime endDate)
 		{
-			var results = await _bccrCurrencyRepository.GetIndicatorAsync(indicador, initialDate, endDate);
+			var results = await bccrCurrencyRepository.GetIndicatorAsync(indicador, initialDate, endDate);
 			if (results == null || !results.Any())
 			{
-				results = Array.Empty<BccrSingleVentanillaModel>();
+				results = [];
 			}
 
 			return new BccrSingleVentanillaModelResponse(results, reqDate, initialDate)
