@@ -1,5 +1,7 @@
 using CurrencyServiceCore.Implementations;
+using CurrencyServiceCore.Models;
 using DataAccess;
+using Domain.Models;
 using Domain.Repositories;
 using Domain.Services;
 using Microsoft.AspNetCore.Builder;
@@ -27,7 +29,7 @@ namespace CurrencyServiceCore
 			services.AddControllers();
 			services.AddHttpClient();
 			services.AddSingleton<IConfiguration>(Configuration);
-
+			services.Configure<ProjectSettingsModel>(Configuration);
 			services.AddSwaggerGen();
 			services.AddSwaggerGen(c =>
 			{
@@ -74,8 +76,11 @@ namespace CurrencyServiceCore
 			services.AddScoped<IBccrCurrencyService, BccrCurrencyService>();
 			services.AddScoped<IBccrCurrencyRepository, BccrWebApiService>();
 			services.AddScoped<IBccrExchangeCache, BccrExchangeCache>();
+			services.AddScoped<IBccrCodesRepository, BccrCodesRepository>();
+			services.AddScoped<IBccrCodesDbCache, BccrCodesDbCache>();
 			services.AddSingleton<IAppMemoryCache, AppMemoryCache>();
 			services.AddSingleton<IMemoryCache, MemoryCache>();
+			services.AddSingleton<IProjectSettings, ProjectSettings>();
 		}
 	}
 
