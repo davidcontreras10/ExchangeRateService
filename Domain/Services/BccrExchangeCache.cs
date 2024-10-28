@@ -11,24 +11,15 @@ namespace Domain.Services
 		public void Set(string indicator, BccrSingleVentanillaModelResponse response);
 	}
 
-	public class BccrExchangeCache : IBccrExchangeCache
+	public class BccrExchangeCache(IAppMemoryCache appMemoryCache, IProjectSettings projectSettings) : IBccrExchangeCache
 	{
 		private const string IndexPrefix = "BccrExchangeCache";
-		private const int CacheHours = 3;
-		private const int LastUpdateMinutesCache = 30;
-		private readonly TimeSpan MaxTimeLastItem = TimeSpan.FromMinutes(2);
-		private readonly IAppMemoryCache appMemoryCache;
-
-		public BccrExchangeCache(IAppMemoryCache appMemoryCache)
-		{
-			this.appMemoryCache = appMemoryCache;
-		}
 
 		public BccrSingleVentanillaModel Get(string indicator, DateTime dateTime)
 		{
 			var key = GetKey(indicator);
 			var cacheItems = appMemoryCache.Get<CacheIndicatorItems>(key);
-			if (cacheItems?.Items == null || !cacheItems.Items.Any())
+			if (cacheItems?.Items == null || cacheItems.Items.Count == 0)
 			{
 				return null;
 			}
@@ -48,17 +39,20 @@ namespace Domain.Services
 				}
 			}
 
-			throw new Exception("Expected item but not found");
+			throw new Exception("Expected range but not found");
 		}
 
 		public void Set(string indicator, BccrSingleVentanillaModelResponse response)
 		{
-			var endReqDate = response.EndReqDate > DateTime.Now ? DateTime.Now.Add(MaxTimeLastItem) : response.EndReqDate;
+			var endReqDate = response.EndReqDate > DateTime.Now ? 
+				DateTime.Now.Add(projectSettings.BccrExchangeMaxTimeLastItem) : 
+				response.EndReqDate;
 			var current = appMemoryCache.Get<CacheIndicatorItems>(GetKey(indicator));
+			var initalDate = GetInitDate(response.BccrSingleVentanillaModels);
 			if (current == null)
 			{
-				var newItems = new CacheItemsRange(Guid.NewGuid(), response.InitialReqDate, endReqDate, response.BccrSingleVentanillaModels.ToList());
-				Set(indicator, new CacheIndicatorItems(new List<CacheItemsRange> { newItems }));
+				var newItems = new CacheItemsRange(Guid.NewGuid(), initalDate, endReqDate, response.BccrSingleVentanillaModels.ToList());
+				Set(indicator, new CacheIndicatorItems([newItems]));
 				return;
 			}
 
@@ -78,7 +72,7 @@ namespace Domain.Services
 			}
 			else
 			{
-				var newRange = new CacheItemsRange(Guid.NewGuid(), response.InitialReqDate, endReqDate, response.BccrSingleVentanillaModels.ToList());
+				var newRange = new CacheItemsRange(Guid.NewGuid(), initalDate, endReqDate, response.BccrSingleVentanillaModels.ToList());
 				current.Items.Add(newRange);
 				Set(indicator, current);
 			}
@@ -87,7 +81,12 @@ namespace Domain.Services
 		private void Set(string indicator, CacheIndicatorItems cacheIndicatorItems)
 		{
 			var key = GetKey(indicator);
-			appMemoryCache.Set(key, cacheIndicatorItems, TimeSpan.FromHours(CacheHours));
+			appMemoryCache.Set(key, cacheIndicatorItems, projectSettings.BccrExchangeCacheTime);
+		}
+
+		private static DateTime GetInitDate(IEnumerable<BccrSingleVentanillaModel> bccrSingleVentanillaModels)
+		{
+			return bccrSingleVentanillaModels.Min(x => x.LastUpdate);
 		}
 
 		private static CacheItemsRange MergeRanges(IReadOnlyCollection<CacheItemsRange> itemsRanges, BccrSingleVentanillaModelResponse response, DateTime endDate)
