@@ -74,6 +74,7 @@ namespace CurrencyServiceCore
 			services.AddScoped<IBccrCurrencyService, BccrCurrencyService>();
 			services.AddScoped<IBccrCurrencyRepository, BccrWebApiService>();
 			services.AddScoped<IBccrExchangeCache, BccrExchangeCache>();
+			services.AddScoped<IBccrCodesRepository, BccrCodesRepository>();
 			services.AddSingleton<IAppMemoryCache, AppMemoryCache>();
 			services.AddSingleton<IMemoryCache, MemoryCache>();
 		}
