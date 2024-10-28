@@ -4,10 +4,8 @@ using System.Collections.Generic;
 
 namespace Domain.Services
 {
-	public class BccrCodesDbCache(IAppMemoryCache appMemoryCache) : IBccrCodesDbCache
+	public class BccrCodesDbCache(IAppMemoryCache appMemoryCache, IProjectSettings projectSettings) : IBccrCodesDbCache
 	{
-		private const int DefaultCacheExpirationInHours = 3;
-
 		public Dictionary<string, string> GetBccrWebServiceExchangeCodeByEntity(string entityName)
 		{
 			var key = GetCodesKey(entityName);
@@ -18,7 +16,7 @@ namespace Domain.Services
 		{
 			ArgumentNullException.ThrowIfNull(codes);
 			var key = GetCodesKey(entityName);
-			appMemoryCache.Set(key, codes, TimeSpan.FromHours(DefaultCacheExpirationInHours));
+			appMemoryCache.Set(key, codes, TimeSpan.FromHours(projectSettings.BccrCodesDbCacheHours));
 		}
 
 		public EntityMethodInfo GetEntityMethodInfo(int methodId)
@@ -31,7 +29,7 @@ namespace Domain.Services
 		{
 			ArgumentNullException.ThrowIfNull(entityMethodInfo);
 			var key = GetEntityMethodInfoKey(methodId);
-			appMemoryCache.Set(key, entityMethodInfo, TimeSpan.FromHours(DefaultCacheExpirationInHours));
+			appMemoryCache.Set(key, entityMethodInfo, TimeSpan.FromHours(projectSettings.BccrCodesDbCacheHours));
 		}
 
 		private static string GetCodesKey(string entityName)

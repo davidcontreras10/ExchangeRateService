@@ -7,5 +7,6 @@ namespace Domain.Models
 		string BccrIndicadorBaseUrl { get; }
 		TimeSpan BccrExchangeCacheTime { get; }
 		TimeSpan BccrExchangeMaxTimeLastItem { get; }
+		int BccrCodesDbCacheHours { get; }
 	}
 }
