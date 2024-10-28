@@ -174,7 +174,7 @@ namespace Domain.Repositories
 		{
 			if (dataSet == null || dataSet.Tables.Count < 2)
 			{
-				return Array.Empty<BccrSingleVentanillaModel>();
+				return [];
 			}
 
 			var dataTable = dataSet.Tables[1];
@@ -185,10 +185,10 @@ namespace Domain.Repositories
 		{
 			if (dataTable == null)
 			{
-				return new List<BccrSingleVentanillaModel>();
+				return [];
 			}
-			IEnumerable<DataRow> enumerable = dataTable.Rows.Cast<DataRow>();
-			List<BccrSingleVentanillaModel> list = new List<BccrSingleVentanillaModel>();
+			var enumerable = dataTable.Rows.Cast<DataRow>();
+			var list = new List<BccrSingleVentanillaModel>();
 			foreach (DataRow row in enumerable)
 			{
 				list.Add(CreateBccrSingleVentanillaModel(row));
@@ -197,12 +197,9 @@ namespace Domain.Repositories
 		}
 		private static BccrSingleVentanillaModel CreateBccrSingleVentanillaModel(DataRow dataRow)
 		{
-			if (dataRow == null)
-			{
-				throw new ArgumentNullException("dataRow");
-			}
-			float value = SystemDataUtilities.GetFloat(dataRow, "NUM_VALOR");
-			DateTime lastUpdate = SystemDataUtilities.GetDateTime(dataRow, "DES_FECHA");
+			ArgumentNullException.ThrowIfNull(dataRow);
+			var value = SystemDataUtilities.GetFloat(dataRow, "NUM_VALOR");
+			var lastUpdate = SystemDataUtilities.GetDateTime(dataRow, "DES_FECHA");
 			return new BccrSingleVentanillaModel
 			{
 				LastUpdate = lastUpdate,
