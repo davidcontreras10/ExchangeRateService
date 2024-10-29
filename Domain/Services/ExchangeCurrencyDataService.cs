@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Domain.Models;
 using DataAccess;
 using Domain.Repositories;
+using Microsoft.Extensions.Logging;
 
 namespace Domain.Services
 {
@@ -16,6 +17,7 @@ namespace Domain.Services
 		private readonly IBccrCurrencyService _bccrWebService;
 		private readonly IBccrCodesRepository _bccrCodesRepository;
 		private readonly IBccrCodesDbCache _bccrCodesDbCache;
+		private readonly ILogger<ExchangeCurrencyDataService> _logger;
 
 		#endregion
 
@@ -25,15 +27,17 @@ namespace Domain.Services
 			IBccrCodesDbCache bccrCodesDbCache,
 			IConnectionConfig connectionConfig,
 			IBccrCurrencyService bccrCurrencyService,
-			IBccrCodesRepository bccrCodesRepository) : base(connectionConfig)
+			IBccrCodesRepository bccrCodesRepository,
+			ILogger<ExchangeCurrencyDataService> logger) : base(connectionConfig)
 		{
-			System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 			ServicePointManager
 					.ServerCertificateValidationCallback +=
 				(sender, cert, chain, sslPolicyErrors) => true;
 			_bccrWebService = bccrCurrencyService;
 			_bccrCodesRepository = bccrCodesRepository;
 			_bccrCodesDbCache = bccrCodesDbCache;
+			_logger = logger;
 		}
 
 		#endregion
@@ -44,8 +48,12 @@ namespace Domain.Services
 		{
 			var cache = _bccrCodesDbCache.GetEntityMethodInfo(methodId);
 			if (cache != null)
+			{
+				_logger.LogInformation("EntityMethodInfo Cache hit");
 				return cache;
+			}
 
+			_logger.LogInformation("EntityMethodInfo Cache miss");
 			var res = _bccrCodesRepository.GetEntityMethodInfo(methodId);
 			_bccrCodesDbCache.SetEntityMethodInfo(methodId, res);
 			return res;
