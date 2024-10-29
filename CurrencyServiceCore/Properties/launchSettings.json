@@ -24,7 +24,7 @@
 						"environmentVariables": {
 								"ASPNETCORE_HTTPS_PORTS": "8081",
 								"ASPNETCORE_HTTP_PORTS": "8080",
-								"ASPNETCORE_ENVIRONMENT": "Container"
+								"ASPNETCORE_ENVIRONMENT": "Development"
 						},
 						"publishAllPorts": true,
 						"useSSL": true

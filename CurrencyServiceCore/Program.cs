@@ -1,11 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CurrencyServiceCore
 {
@@ -17,10 +12,15 @@ namespace CurrencyServiceCore
 		}
 
 		public static IHostBuilder CreateHostBuilder(string[] args) =>
-			Host.CreateDefaultBuilder(args)
-				.ConfigureWebHostDefaults(webBuilder =>
-				{
-					webBuilder.UseStartup<Startup>();
-				});
+				Host.CreateDefaultBuilder(args)
+					.ConfigureLogging(logging =>
+					{
+						logging.ClearProviders(); // Optional: Clears default logging providers
+						logging.AddConsole();     // Adds console logging
+					})
+					.ConfigureWebHostDefaults(webBuilder =>
+					{
+						webBuilder.UseStartup<Startup>();
+					});
 	}
 }
