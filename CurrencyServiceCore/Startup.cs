@@ -74,7 +74,7 @@ namespace CurrencyServiceCore
 			services.AddScoped<IExchangeCurrencyDataService, ExchangeCurrencyDataService>();
 			services.AddScoped<IDolarColonesBccrService, DolarColonesBccrService>();
 			services.AddScoped<IBccrCurrencyService, BccrCurrencyService>();
-			services.AddScoped<IBccrCurrencyRepository, BccrWebApiService>();
+			//services.AddScoped<IBccrCurrencyRepository, BccrDirectWebServiceRepository>();
 			services.AddScoped<IBccrExchangeCache, BccrExchangeCache>();
 			services.AddScoped<IBccrCodesRepository, BccrCodesRepository>();
 			services.AddScoped<IBccrCodesDbCache, BccrCodesDbCache>();

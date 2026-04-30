@@ -10,6 +10,8 @@ namespace Domain.Repositories
 {
     public class BccrAPICurrencyRepository(IHttpClientFactory httpClientFactory) : IBccrCurrencyRepository
     {
+        public static BccrServiceType ServiceType => BccrServiceType.IndicatorsApi;
+
         public Task<IEnumerable<BccrSingleVentanillaModel>> GetIndicatorAsync(string indicator, DateTime initial, DateTime end)
         {
             throw new NotImplementedException();
