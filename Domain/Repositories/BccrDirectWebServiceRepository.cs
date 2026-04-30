@@ -63,7 +63,7 @@ namespace Domain.Repositories
 			var reader = new StringReader(jsonResponse);
 			var theDataSet = new DataSet();
 			theDataSet.ReadXml(reader);
-			return BccrCurrencyRepositoryUtils.Convert(theDataSet);
+			return BccrCurrencyRepositoryUtils.Convert(theDataSet, 0);
 		}
 
 		private async Task<IEnumerable<BccrSingleVentanillaModel>> GetIndicatorGetBccrAsync(string indicator, DateTime initial, DateTime end)
@@ -100,7 +100,7 @@ namespace Domain.Repositories
 			var reader = new StringReader(jsonResponse);
 			var theDataSet = new DataSet();
 			theDataSet.ReadXml(reader);
-			return BccrCurrencyRepositoryUtils.Convert(theDataSet);
+			return BccrCurrencyRepositoryUtils.Convert(theDataSet, 0);
 		}
 
 		protected override string GetApiBaseDomain()

@@ -11,14 +11,14 @@ namespace Domain.Repositories
 {
     public static class BccrCurrencyRepositoryUtils
     {
-        public static IEnumerable<BccrSingleVentanillaModel> Convert(DataSet dataSet)
+        public static IEnumerable<BccrSingleVentanillaModel> Convert(DataSet dataSet, int expectedIndex)
         {
-            if (dataSet == null || dataSet.Tables.Count < 2)
+            if (dataSet == null || dataSet.Tables.Count < expectedIndex + 1)
             {
                 return [];
             }
 
-            var dataTable = dataSet.Tables[1];
+            var dataTable = dataSet.Tables[expectedIndex];
             return CreateBccrSingleVentanillaModel(dataTable);
         }
 

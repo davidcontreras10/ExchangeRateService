@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
 
 namespace CurrencyServiceCore
 {
@@ -74,7 +75,11 @@ namespace CurrencyServiceCore
 			services.AddScoped<IExchangeCurrencyDataService, ExchangeCurrencyDataService>();
 			services.AddScoped<IDolarColonesBccrService, DolarColonesBccrService>();
 			services.AddScoped<IBccrCurrencyService, BccrCurrencyService>();
-			//services.AddScoped<IBccrCurrencyRepository, BccrDirectWebServiceRepository>();
+			services.AddKeyedScoped<IBccrCurrencyRepository, BccrDirectWebServiceRepository>(BccrServiceType.DirectWebService);
+			services.AddKeyedScoped<IBccrCurrencyRepository, BccrBridgeWebServiceRepository>(BccrServiceType.BridgedWebService);
+			services.AddKeyedScoped<IBccrCurrencyRepository, BccrAPICurrencyRepository>(BccrServiceType.IndicatorsApi);
+			services.AddScoped<Func<BccrServiceType, IBccrCurrencyRepository>>(sp =>
+				serviceType => sp.GetRequiredKeyedService<IBccrCurrencyRepository>(serviceType));
 			services.AddScoped<IBccrExchangeCache, BccrExchangeCache>();
 			services.AddScoped<IBccrCodesRepository, BccrCodesRepository>();
 			services.AddScoped<IBccrCodesDbCache, BccrCodesDbCache>();
