@@ -15,6 +15,7 @@ namespace CurrencyServiceCore.Models
 
         public BccrCodesDbCacheSection BccrCodesDbCache { get; set; }
         public BccrServiceType BccrIndicadorActiveMethod { get; set; }
+		public string BccrIndicadorAPIBaseUrl { get; set; }
 
         public class BccrCodesDbCacheSection
 		{

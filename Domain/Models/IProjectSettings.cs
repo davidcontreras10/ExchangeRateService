@@ -10,5 +10,6 @@ namespace Domain.Models
 		int BccrCodesDbCacheHours { get; }
         BccrServiceType BccrIndicadorActiveMethod { get; }
 		string BccrBridgeBaseUrl { get; }
+		string BccrIndicadorAPIBaseUrl { get; }
     }
 }

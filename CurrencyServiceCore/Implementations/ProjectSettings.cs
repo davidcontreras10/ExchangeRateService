@@ -20,5 +20,8 @@ namespace CurrencyServiceCore.Implementations
         public BccrServiceType BccrIndicadorActiveMethod => _settings.BccrIndicadorActiveMethod;
 
         public string BccrBridgeBaseUrl => _settings.BccrBridgeBaseUrl;
+
+		public string BccrIndicadorAPIBaseUrl => _settings.BccrIndicadorAPIBaseUrl;
+
     }
 }
