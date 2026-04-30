@@ -9,5 +9,6 @@ namespace Domain.Models
 		TimeSpan BccrExchangeMaxTimeLastItem { get; }
 		int BccrCodesDbCacheHours { get; }
         BccrServiceType BccrIndicadorActiveMethod { get; }
+		string BccrBridgeBaseUrl { get; }
     }
 }

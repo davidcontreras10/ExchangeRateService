@@ -13,7 +13,7 @@ using WebApiBaseConsumer;
 
 namespace Domain.Repositories
 {
-    public class BccrBridgeWebServiceRepository(IHttpClientFactory httpClientFactory) : WebApiBaseService(httpClientFactory), IBccrCurrencyRepository
+    public class BccrBridgeWebServiceRepository(IHttpClientFactory httpClientFactory, IProjectSettings projectSettings) : WebApiBaseService(httpClientFactory), IBccrCurrencyRepository
     {
 
         protected override string ControllerName => string.Empty;
@@ -90,7 +90,7 @@ namespace Domain.Repositories
 
         protected override string GetApiBaseDomain()
         {
-            return "https://myfinance-363522.ue.r.appspot.com/currency";
+            return projectSettings.BccrBridgeBaseUrl;
         }
     }
 }

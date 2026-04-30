@@ -5,7 +5,9 @@ namespace CurrencyServiceCore.Models
 {
 	public class ProjectSettingsModel
 	{
-		public string BccrIndicadorBaseUrl { get; set; }
+		public string BccrBridgeBaseUrl { get; set; }
+
+        public string BccrIndicadorBaseUrl { get; set; }
 
 		public TimeSpan BccrExchangeCacheTime { get; set; }
 

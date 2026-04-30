@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Repositories
 {
-    public class BccrAPICurrencyRepository(IHttpClientFactory httpClientFactory) : IBccrCurrencyRepository
+    public class BccrAPICurrencyRepository(IHttpClientFactory httpClientFactory, IProjectSettings projectSettings) : IBccrCurrencyRepository
     {
         public static BccrServiceType ServiceType => BccrServiceType.IndicatorsApi;
 

@@ -12,12 +12,9 @@ using WebApiBaseConsumer;
 
 namespace Domain.Repositories
 {
-	public class BccrDirectWebServiceRepository(IHttpClientFactory httpClientFactory) : WebApiBaseService(httpClientFactory), IBccrCurrencyRepository
+	public class BccrDirectWebServiceRepository(IHttpClientFactory httpClientFactory, IProjectSettings projectSettings) : WebApiBaseService(httpClientFactory), IBccrCurrencyRepository
 	{
-
 		protected override string ControllerName => string.Empty;
-
-        public static BccrServiceType ServiceType => BccrServiceType.DirectWebService;
 
         public async Task<IEnumerable<BccrSingleVentanillaModel>> GetIndicatorAsync(string indicator, DateTime initial, DateTime end)
 		{
@@ -105,7 +102,7 @@ namespace Domain.Repositories
 
 		protected override string GetApiBaseDomain()
 		{
-            return "https://gee.bccr.fi.cr/Indicadores/Suscripciones/WS/wsindicadoreseconomicos.asmx/ObtenerIndicadoresEconomicos";
+			return projectSettings.BccrIndicadorBaseUrl;
 		}
 	}
 }

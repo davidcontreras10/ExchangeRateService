@@ -18,5 +18,7 @@ namespace CurrencyServiceCore.Implementations
 		public int BccrCodesDbCacheHours => _settings.BccrCodesDbCache.DefaultCacheExpirationInHours;
 
         public BccrServiceType BccrIndicadorActiveMethod => _settings.BccrIndicadorActiveMethod;
+
+        public string BccrBridgeBaseUrl => _settings.BccrBridgeBaseUrl;
     }
 }
