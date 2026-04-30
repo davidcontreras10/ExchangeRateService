@@ -16,5 +16,7 @@ namespace CurrencyServiceCore.Implementations
 		public TimeSpan BccrExchangeMaxTimeLastItem => _settings.BccrExchangeMaxTimeLastItem;
 
 		public int BccrCodesDbCacheHours => _settings.BccrCodesDbCache.DefaultCacheExpirationInHours;
-	}
+
+        public BccrServiceType BccrIndicadorActiveMethod => _settings.BccrIndicadorActiveMethod;
+    }
 }

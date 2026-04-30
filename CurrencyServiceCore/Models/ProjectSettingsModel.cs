@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Models;
+using System;
 
 namespace CurrencyServiceCore.Models
 {
@@ -11,6 +12,7 @@ namespace CurrencyServiceCore.Models
 		public TimeSpan BccrExchangeMaxTimeLastItem { get; set; }
 
         public BccrCodesDbCacheSection BccrCodesDbCache { get; set; }
+        public BccrServiceType BccrIndicadorActiveMethod { get; set; }
 
         public class BccrCodesDbCacheSection
 		{
