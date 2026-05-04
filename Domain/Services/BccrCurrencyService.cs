@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain.Models;
 using Domain.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Domain.Services
@@ -13,7 +14,11 @@ namespace Domain.Services
 		Task<IEnumerable<BccrSingleVentanillaModel>> GetBccrSingleVentanillaModelsAsync(string indicador, DateTime dateTime);
 	}
 
-	public class BccrCurrencyService(IBccrCurrencyRepository bccrCurrencyRepository, IBccrExchangeCache bccrExchangeCache, ILogger<BccrCurrencyService> logger) : IBccrCurrencyService
+	public class BccrCurrencyService(
+		Func<BccrServiceType, IBccrCurrencyRepository> bccrCurrencyRepositoryResolver,
+		IProjectSettings projectSettings,
+		IBccrExchangeCache bccrExchangeCache,
+		ILogger<BccrCurrencyService> logger) : IBccrCurrencyService
 	{
 		private readonly bool _allowCache = true;
 
@@ -49,6 +54,11 @@ namespace Domain.Services
 
 		private async Task<BccrSingleVentanillaModelResponse> GetFromDbBccrSingleVentanillaModelsAsync(string indicador, DateTime reqDate, DateTime initialDate, DateTime endDate)
 		{
+			var bccrCurrencyRepository = bccrCurrencyRepositoryResolver(projectSettings.BccrIndicadorActiveMethod);
+			if (bccrCurrencyRepository == null)
+			{
+				throw new InvalidOperationException($"No repository found for BccrServiceType: {projectSettings.BccrIndicadorActiveMethod}");
+            }
 			var results = await bccrCurrencyRepository.GetIndicatorAsync(indicador, initialDate, endDate);
 			if (results == null || !results.Any())
 			{

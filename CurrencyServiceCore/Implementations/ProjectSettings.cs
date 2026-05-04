@@ -16,5 +16,14 @@ namespace CurrencyServiceCore.Implementations
 		public TimeSpan BccrExchangeMaxTimeLastItem => _settings.BccrExchangeMaxTimeLastItem;
 
 		public int BccrCodesDbCacheHours => _settings.BccrCodesDbCache.DefaultCacheExpirationInHours;
-	}
+
+        public BccrServiceType BccrIndicadorActiveMethod => _settings.BccrIndicadorActiveMethod;
+
+        public string BccrBridgeBaseUrl => _settings.BccrBridgeBaseUrl;
+
+		public string BccrIndicadorAPIBaseUrl => _settings.BccrIndicadorAPIBaseUrl;
+
+		public string BccrIndicadoresEconomicosToken => _settings.BancoCentral.IndicadoresEconomicosToken;
+
+    }
 }

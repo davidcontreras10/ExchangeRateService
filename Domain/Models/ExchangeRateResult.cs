@@ -4,8 +4,8 @@
 	{
 		#region Public properties
 
-		public double Numerator { get; set; }
-		public double Denominator { get; set; }
+		public decimal Numerator { get; set; }
+		public decimal Denominator { get; set; }
 		public bool Success { get; set; }
 		public ResultType ResultTypeValue { get; set; }
 		public ResultError ErrorType { get; set; }

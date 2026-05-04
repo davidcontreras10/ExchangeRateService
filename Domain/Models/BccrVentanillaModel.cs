@@ -8,8 +8,8 @@ namespace Domain.Models
 		#region Attributes
 
 		public string EntityName { get; set; }
-		public float Purchase { get; set; }
-		public float Sell { get; set; }
+		public decimal Purchase { get; set; }
+		public decimal Sell { get; set; }
 		public DateTime LastUpdate { get; set; }
 
 		#endregion
@@ -27,8 +27,7 @@ namespace Domain.Models
 
 	public class BccrSingleVentanillaModel
 	{
-		public string EntityName { get; set; }
-		public float Value { get; set; }
+		public decimal Value { get; set; }
 		public DateTime LastUpdate { get; set; }
 
 		public override bool Equals(object obj)
@@ -39,7 +38,7 @@ namespace Domain.Models
 			}
 
 			var other = (BccrSingleVentanillaModel)obj;
-			return EntityName == other.EntityName && Value == other.Value && LastUpdate == other.LastUpdate;
+			return Value == other.Value && LastUpdate == other.LastUpdate;
 		}
 
 		//override the == and != operator to use same logic as Equals and alos the getHashCode
@@ -66,7 +65,7 @@ namespace Domain.Models
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(EntityName, Value, LastUpdate);
+			return HashCode.Combine(Value, LastUpdate);
 		}
 	}
 

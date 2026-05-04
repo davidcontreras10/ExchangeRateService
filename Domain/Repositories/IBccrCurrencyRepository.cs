@@ -7,6 +7,6 @@ namespace Domain.Repositories
 {
 	public interface IBccrCurrencyRepository
 	{
-		Task<IEnumerable<BccrSingleVentanillaModel>> GetIndicatorAsync(string indicator, DateTime initial, DateTime end);
+        Task<IEnumerable<BccrSingleVentanillaModel>> GetIndicatorAsync(string indicator, DateTime initial, DateTime end);
 	}
 }
