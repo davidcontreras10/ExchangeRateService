@@ -55,6 +55,10 @@ namespace Domain.Services
 		private async Task<BccrSingleVentanillaModelResponse> GetFromDbBccrSingleVentanillaModelsAsync(string indicador, DateTime reqDate, DateTime initialDate, DateTime endDate)
 		{
 			var bccrCurrencyRepository = bccrCurrencyRepositoryResolver(projectSettings.BccrIndicadorActiveMethod);
+			if (bccrCurrencyRepository == null)
+			{
+				throw new InvalidOperationException($"No repository found for BccrServiceType: {projectSettings.BccrIndicadorActiveMethod}");
+            }
 			var results = await bccrCurrencyRepository.GetIndicatorAsync(indicador, initialDate, endDate);
 			if (results == null || !results.Any())
 			{
