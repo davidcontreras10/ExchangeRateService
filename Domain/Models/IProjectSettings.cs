@@ -11,5 +11,6 @@ namespace Domain.Models
         BccrServiceType BccrIndicadorActiveMethod { get; }
 		string BccrBridgeBaseUrl { get; }
 		string BccrIndicadorAPIBaseUrl { get; }
+		string BccrIndicadoresEconomicosToken { get; }
     }
 }

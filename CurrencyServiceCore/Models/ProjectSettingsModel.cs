@@ -12,6 +12,7 @@ namespace CurrencyServiceCore.Models
 		public TimeSpan BccrExchangeCacheTime { get; set; }
 
 		public TimeSpan BccrExchangeMaxTimeLastItem { get; set; }
+        public BancoCentralSettings BancoCentral { get; set; }
 
         public BccrCodesDbCacheSection BccrCodesDbCache { get; set; }
         public BccrServiceType BccrIndicadorActiveMethod { get; set; }
@@ -21,5 +22,10 @@ namespace CurrencyServiceCore.Models
 		{
             public int DefaultCacheExpirationInHours { get; set; }
         }
-	}
+
+        public class BancoCentralSettings
+        {
+            public string IndicadoresEconomicosToken { get; set; } = string.Empty;
+        }
+    }
 }

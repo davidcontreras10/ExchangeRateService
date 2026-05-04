@@ -23,5 +23,7 @@ namespace CurrencyServiceCore.Implementations
 
 		public string BccrIndicadorAPIBaseUrl => _settings.BccrIndicadorAPIBaseUrl;
 
+		public string BccrIndicadoresEconomicosToken => _settings.BancoCentral.IndicadoresEconomicosToken;
+
     }
 }

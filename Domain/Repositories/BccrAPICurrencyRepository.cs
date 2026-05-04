@@ -30,6 +30,7 @@ namespace Domain.Repositories
             };
 
             var url = projectSettings.BccrIndicadorAPIBaseUrl + CreateMethodUrl(methodUrlBase, queryParams);
+            var token = projectSettings.BccrIndicadoresEconomicosToken;
             var request = new WebApiRequest(url, HttpMethod.Get)
             {
                 Headers = new Dictionary<string, string>
@@ -39,7 +40,7 @@ namespace Domain.Repositories
                     {"Cache-Control", "no-cache"},
                     {"Access-Control-Allow-Origin", "*"}
                 },
-                AccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJCQ0NSLVNEREUiLCJzdWIiOiJkY29udHJlMTBAZ21haWwuY29tIiwiYXVkIjoiU0RERS1TaXRpb0V4dGVybm8iLCJleHAiOjI1MzQwMjMwMDgwMCwibmJmIjoxNzc3NDM5NDczLCJpYXQiOjE3Nzc0Mzk0NzMsImp0aSI6Ijk5MTkyMGFiLWY3MmUtNDcwMS05ZmI5LTA4MjM0NTE5MmRmOCIsImVtYWlsIjoiZGNvbnRyZTEwQGdtYWlsLmNvbSJ9.QjdmM5E7L3ZqCS2Uj6a4LFcayaadfnjOTtUt2wrjmm4",
+                AccessToken = token,
                 UseControllerBaseUrl = false
             };
 
