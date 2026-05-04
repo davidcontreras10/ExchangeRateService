@@ -8,8 +8,8 @@ namespace Domain.Models
 		#region Attributes
 
 		public string EntityName { get; set; }
-		public float Purchase { get; set; }
-		public float Sell { get; set; }
+		public decimal Purchase { get; set; }
+		public decimal Sell { get; set; }
 		public DateTime LastUpdate { get; set; }
 
 		#endregion
@@ -27,7 +27,7 @@ namespace Domain.Models
 
 	public class BccrSingleVentanillaModel
 	{
-		public float Value { get; set; }
+		public decimal Value { get; set; }
 		public DateTime LastUpdate { get; set; }
 
 		public override bool Equals(object obj)

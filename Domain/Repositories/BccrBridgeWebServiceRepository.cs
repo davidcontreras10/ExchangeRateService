@@ -84,7 +84,7 @@ namespace Domain.Repositories
             return new BccrSingleVentanillaModel
             {
                 LastUpdate = lastUpdate,
-                Value = value
+                Value = (decimal)value
             };
         }
 

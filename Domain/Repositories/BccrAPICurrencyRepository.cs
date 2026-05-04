@@ -1,9 +1,7 @@
 ﻿using Domain.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using WebApiBaseConsumer;
 
@@ -16,7 +14,31 @@ namespace Domain.Repositories
         public async Task<IEnumerable<BccrSingleVentanillaModel>> GetIndicatorAsync(string indicator, DateTime initial, DateTime end)
         {
             var response = await GetSeriesIndicadoresEconomicosResponse(indicator, initial, end);
-            throw new NotImplementedException();
+
+            if (response == null || !response.Estado || response.Datos == null || response.Datos.Length == 0)
+            {
+                return [];
+            }
+
+            var bccrSingleVentanillaItems = new List<BccrSingleVentanillaModel>();
+            foreach (var data in response.Datos)
+            {
+                if (data.Series == null || data.Series.Count == 0)
+                {
+                    continue;
+                }
+                foreach (var serie in data.Series)
+                {
+                    bccrSingleVentanillaItems.Add(new BccrSingleVentanillaModel
+                    {
+                        Value = serie.ValorDatoPorPeriodo,
+                        LastUpdate = serie.Fecha
+                    });
+                }
+            }
+
+            return bccrSingleVentanillaItems;
+
         }
 
         private async Task<BccrAPIResponse<BccrAPIIndicatorSeriesData>> GetSeriesIndicadoresEconomicosResponse(string indicator, DateTime initial, DateTime end) 
